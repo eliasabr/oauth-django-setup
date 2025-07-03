@@ -1,62 +1,17 @@
-#### Video Tutorial for this project
-https://youtu.be/SQ4A7Q6_md8
-<br><br>
+# Django OAuth Setup
 
-#### Getting the files
-Download zip file<br> 
-or <br>
-git clone command (need git to be installed) and remove git folder afterwards
-```
-git clone https://github.com/andyjud/django-starter.git . && rm -rf .git
-```
-<br><br><br>
+This is a simple Django project demonstrating how to implement OAuth authentication using social providers like Google or Facebook.
 
-## Setup
+## Features
 
-#### - Create Virtual Environment
-###### # Mac
-```
-python3 -m venv venv
-source venv/bin/activate
-```
+- Login with Google and Facebook 
+- Django Allauth integration
+- Basic user authentication flow
+- Ready-to-use development environment
 
-###### # Windows
-```
-python3 -m venv venv
-.\venv\Scripts\activate.bat
-```
+## Tech Stack
 
-<br>
-
-#### - Install dependencies
-```
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-<br>
-
-#### - Migrate to database
-```
-python manage.py migrate
-python manage.py createsuperuser
-```
-
-<br>
-
-#### - Run application
-```
-python manage.py runserver
-```
-
-<br>
-
-#### - Generate Secret Key ( ! Important for deployment ! )
-```
-python manage.py shell
-from django.core.management.utils import get_random_secret_key
-print(get_random_secret_key())
-exit()
-```
-
-
+- Python 3.x
+- Django 4.x
+- Django Allauth
+- SQLite (default database)
