@@ -11,6 +11,9 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from environ import Env
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,11 +47,40 @@ INSTALLED_APPS = [
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.facebook',
 
     # My apps
     'a_home',
     'a_users',
 ]
+
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        'APP': {
+            'client_id': env('OAUTH_GOOGLE_CLIENT_ID'),
+            'secret': env('OAUTH_GOOGLE_SECRET'),
+        },
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+            'prompt': 'consent',
+        },
+    },
+    'facebook': {
+        'APP': {
+            'client_id': env('OAUTH_FACEBOOK_CLIENT_ID'),
+            'secret': env('OAUTH_FACEBOOK_SECRET'),
+        },
+        'AUTH_PARAMS': {
+            'auth_type': 'reauthenticate',
+        },
+    },
+}
 
 SITE_ID = 1
 
@@ -148,3 +180,41 @@ LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_LOGIN_METHODS = {'email'}
 ACCOUNT_EMAIL_REQUIRED = True
+
+# social media auth
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+
+# If True, attempt to bypass login form. If False a login
+# form will be rendered allowing the user to enter credentials.
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# Attempt to bypass the signup form and auto signup using
+# the information we have from the social account provider.
+# If False, a signup form will be rendered allowing the user
+# to complete the signup process.
+SOCIALACCOUNT_AUTO_SIGNUP = True
+
+# Unique email addresses
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_UNIQUE_EMAIL = True
+
+# Authentication using the email address
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+# If True the user is allowed to login using his email address.
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+
+# If True the user is allowed to login using his email address
+# and no email verification is performed on the email address.
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+
+# Verification of email address
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
+# If mandatory the user is required to verify ownership of the email address before
+# the account can be fully operational. If optional the user can still login,
+# but will be presented with a verification form.
+SOCIALACCOUNT_EMAIL_VERIFICATION = 'none'
+
+# Custom adapters
+# https://django-allauth.readthedocs.io/en/latest/advanced.html#custom-adapter-methods
+ACCOUNT_ADAPTER = 'a_users.adapters.CustomAccountAdapter'
+SOCIALACCOUNT_ADAPTER = 'a_users.adapters.SocialAccountAdapter'
